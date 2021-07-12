@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 let map: Map<string, WebSocket[]>;
 
-const getMap = function () {
+const getMap = (): Map<string, WebSocket[]> => {
   if (!map) {
     map = new Map();
   }

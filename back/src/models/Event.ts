@@ -6,7 +6,7 @@ const EventSchema: Schema = new Schema({
 });
 
 EventSchema.set("toJSON", {
-  transform: function (doc: any, ret: any, options: any) {
+  transform: (doc: any, ret: any, options: any) => {
     ret.id = ret._id;
     delete ret._id;
     delete ret.__v;

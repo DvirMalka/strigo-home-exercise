@@ -20,10 +20,6 @@ app.use(express.urlencoded({ extended: true }));
 // enable cors
 app.use(cors());
 
-app.get("/ping", (req: Request, res: Response, next: NextFunction) => {
-  res.send({ message: "pong" });
-});
-
 // Application routes
 app.use(`/events`, routes.events);
 app.use(`/workspaces`, routes.workspaces);

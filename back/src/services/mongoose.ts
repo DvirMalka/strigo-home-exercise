@@ -2,7 +2,7 @@ import mongoose, { Mongoose } from "mongoose";
 import logger from "./logger";
 let mongooseClient: Mongoose;
 
-const init = async function (): Promise<Mongoose> {
+const init = async (): Promise<Mongoose> => {
   logger.info(`Connecting to mongoDB in ${process.env.MONGODB_URI}`);
   mongooseClient = await mongoose.connect(<string>process.env.MONGODB_URI, {
     useCreateIndex: true,
@@ -13,7 +13,7 @@ const init = async function (): Promise<Mongoose> {
   return mongooseClient;
 };
 
-const getClient = async function (): Promise<Mongoose> {
+const getClient = async (): Promise<Mongoose> => {
   if (!mongooseClient) {
     await init();
   }

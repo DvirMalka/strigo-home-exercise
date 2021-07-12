@@ -11,7 +11,7 @@ const map = getMap();
 
 let wss: WebSocket.Server;
 
-const init = function (): WebSocket.Server {
+const init = (): WebSocket.Server => {
   wss = new WebSocket.Server({
     port: Number(process.env.WS_PORT || 8080),
   });
@@ -21,7 +21,7 @@ const init = function (): WebSocket.Server {
     const id = uuid();
     ws.id = id;
     ws.on("message", (message: string) => {
-      logger.info("Client Message", message);
+      logger.info("Client Message", { message });
       const { eventId, type } = JSON.parse(message) as ClientMessage;
       if (!eventId) return;
       const mappedWs = map.get(eventId);
@@ -41,14 +41,19 @@ const init = function (): WebSocket.Server {
           break;
       }
     });
-    ws.on("close", () => {});
+    ws.on("close", () => {
+      logger.info("Closing connection - removing WS")
+      for (let [key, value] of map.entries()) {
+        map.set(key, value?.filter((mapped: any) => mapped.id !== ws.id) || []);
+      }
+    });
   });
 
   logger.info(`WebSocketServer running - port ${process.env.WS_PORT}`);
   return wss;
 };
 
-const getWss = function (): WebSocket.Server {
+const getWss = (): WebSocket.Server => {
   if (!wss) {
     init();
   }

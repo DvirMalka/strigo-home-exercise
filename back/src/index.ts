@@ -1,3 +1,4 @@
+// Load the environment variables
 require("dotenv").config();
 import * as mongooseService from "./services/mongoose";
 import logger from "./services/logger";

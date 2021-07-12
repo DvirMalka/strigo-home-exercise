@@ -22,7 +22,7 @@ const WorkspaceSchema: Schema = new Schema(
 );
 
 WorkspaceSchema.set("toJSON", {
-  transform: function (doc: any, ret: any, options: any) {
+  transform: (doc: any, ret: any, options: any) => {
     ret.id = ret._id;
     delete ret._id;
     delete ret.__v;
@@ -30,7 +30,7 @@ WorkspaceSchema.set("toJSON", {
 });
 
 // Stage 1: Broadcast to all of the connected users when saving
-// WorkspaceSchema.post("save", async function (doc, next) {
+// WorkspaceSchema.post("save", async (doc, next) => {
 //   let WorkspaceModel = mongoose.model<IWorkspace>("Workspace");
 //   const workspaces = await WorkspaceModel.find();
 //   await broadcast({ data: workspaces });
@@ -38,7 +38,7 @@ WorkspaceSchema.set("toJSON", {
 // });
 
 // Stage 2: Only send update to registered users
-WorkspaceSchema.post("save", async function (doc: IWorkspace, next) {
+WorkspaceSchema.post("save", async (doc: IWorkspace, next) => {
   let WorkspaceModel = mongoose.model<IWorkspace>("Workspace");
 
   // Get workspaces for the specific event

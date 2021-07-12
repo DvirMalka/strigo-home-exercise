@@ -4,14 +4,13 @@ import * as db from "../db";
 const router = Router();
 
 // Get all workspaces
-router.get("/", async (req: Request, res: Response) => {
-  console.log(req.session);
+router.get("/", async function (req: Request, res: Response): Promise<void> {
   const workspaces = await db.getWorkspaces();
   res.send({ workspaces });
 });
 
 // Get workspaces of a specific event
-router.get("/:eventId", async (req: Request, res: Response) => {
+router.get("/:eventId", async (req: Request, res: Response): Promise<void> => {
   const { eventId } = req.params;
   const workspaces = await db.getEventWorkspaces(
     mongooseTypes.ObjectId(eventId)
@@ -20,7 +19,7 @@ router.get("/:eventId", async (req: Request, res: Response) => {
 });
 
 // Add workspace to event
-router.post("/:eventId", async (req: Request, res: Response) => {
+router.post("/:eventId", async (req: Request, res: Response): Promise<void> => {
   const { eventId } = req.params;
   const { owner, status } = req.body;
   const workspace = await db.addWorkspace({

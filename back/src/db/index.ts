@@ -10,29 +10,29 @@ const getEvents = async () => {
   return EventModel.find();
 };
 
-const getEvent = async (eventId: EventId) => {
+const getEvent = async (eventId: EventId): Promise<IEvent | null> => {
   return EventModel.findById(eventId);
 };
 
-const addEvent = async (event: IEvent) => {
+const addEvent = async (event: IEvent): Promise<IEvent> => {
   return EventModel.create({
-    ...event,
+    event,
   });
 };
 
 // Workspaces
-const getWorkspaces = async () => {
+const getWorkspaces = async (): Promise<IWorkspace[]> => {
   return WorkspaceModel.find();
 };
 
-const getEventWorkspaces = async (eventId: EventId) => {
+const getEventWorkspaces = async (eventId: EventId): Promise<IWorkspace[]> => {
   logger.info(`Getting workspaces for event ${eventId}`);
   return WorkspaceModel.find({ eventId }).exec();
 };
 
-const addWorkspace = async function (workspace: IWorkspace) {
+const addWorkspace = async (workspace: IWorkspace): Promise<IWorkspace> => {
   return WorkspaceModel.create({
-    ...workspace,
+    workspace,
   });
 };
 
