@@ -1,26 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+ 
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import { isAppLoadedState } from './recoil/atoms';
+
+import WorkspacesTable from './components/WorkspacesTable';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [isAppLoaded, setIsAppLoaded] = useRecoilState(isAppLoadedState);
+
+  useEffect(() => {
+    setIsAppLoaded(true);
+  });
+
+  return <div>{isAppLoaded && <WorkspacesTable />}</div>;
 }
 
 export default App;

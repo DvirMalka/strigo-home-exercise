@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import { WorkspaceStatus, IWorkspace } from "../types/Workspace";
-import { broadcast } from "../services/wss";
+import { broadcast } from "../wss";
 
 const WorkspaceSchema: Schema = new Schema(
   {

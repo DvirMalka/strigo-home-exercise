@@ -1,6 +1,6 @@
 import WebSocket from "ws";
-import { WebsocketMessage } from "../types/WebSocket";
-import logger from "./logger";
+import { WebsocketMessage } from "./types/WebSocket";
+import logger from "./services/logger";
 
 let wsServer: WebSocket.Server;
 
@@ -19,7 +19,7 @@ const getWsServer = function (): WebSocket.Server {
   return wsServer;
 };
 
-// Broadcast message - sending data
+// Broadcast message - sending data to all connected users
 const broadcast = (data: WebsocketMessage): void =>
   wsServer.clients.forEach((client) => {
     client.send(JSON.stringify(data));
