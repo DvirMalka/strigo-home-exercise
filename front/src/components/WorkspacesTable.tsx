@@ -2,19 +2,21 @@ import { useEffect } from "react";
 import Table from "react-bootstrap/Table";
 import { useRecoilState } from "recoil";
 import { workspacesState } from "../recoil/atoms";
-import { ws, getWorkspaces } from "../services/network";
+import { ClientMessageTypes } from "../types/WebSocket";
+import { useParams } from "react-router-dom";
+import { getWorkspaces } from "../services/api";
+import ws from "../services/ws";
 
 function WorkspacesTable() {
   const [workspaces, setWorkspaces] = useRecoilState(workspacesState);
+  const { eventId } = useParams<{ eventId: string }>();
+
   useEffect(() => {
+    console.log("USE EF", eventId);
     const initialFetch = () => {
-      getWorkspaces().then((result) => {
+      getWorkspaces(eventId).then((result) => {
         setWorkspaces(result);
       });
-    };
-
-    ws.onopen = () => {
-      console.log("websocket connection established");
     };
 
     ws.onmessage = (evt) => {
@@ -22,17 +24,23 @@ function WorkspacesTable() {
       setWorkspaces(data);
     };
 
-    ws.onclose = () => {
-      console.log("websocket disconnected");
-    };
-
     initialFetch();
-  }, [setWorkspaces]);
+    if (eventId && ws.readyState === 1) {
+      ws.send(JSON.stringify({ eventId, type: ClientMessageTypes.REGISTER }));
+    }
+    return () => {
+      if (eventId && ws) {
+        ws.send(
+          JSON.stringify({ eventId, type: ClientMessageTypes.UNREGISTER })
+        );
+      }
+    };
+  }, [setWorkspaces, eventId, ws.readyState]);
 
   return (
-    <Table striped bordered hover>
+    <Table key="workspace-table" striped bordered hover>
       <thead>
-        <tr>
+        <tr key="workspace-header">
           <th>Id</th>
           <th>Status</th>
           <th>Owner</th>
@@ -41,9 +49,8 @@ function WorkspacesTable() {
       </thead>
       <tbody>
         {workspaces.map((workspace) => (
-          <tr>
+          <tr key={workspace.id}>
             <td>{workspace.id}</td>
-
             <td>{workspace.status}</td>
             <td>{workspace.owner}</td>
             <td>{workspace.createdAt}</td>

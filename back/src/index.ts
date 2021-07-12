@@ -6,7 +6,7 @@ import app from "./app";
 
 let server: any;
 
-async function init() {
+const init = async () => {
   try {
     await mongooseService.init();
     logger.info("Connected to MongoDB");
@@ -17,7 +17,7 @@ async function init() {
   } catch (err: any) {
     logger.error("Cannot connect to MongoDB", err);
   }
-}
+};
 
 const exitHandler = () => {
   if (server) {

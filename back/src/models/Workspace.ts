@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-import { WorkspaceStatus, IWorkspace } from "../types/Workspace";
-import { broadcast } from "../wss";
+import { WorkspaceStatus, IWorkspace, WorkspaceId } from "../types/Workspace";
+import { updateRegisteredUsers } from "../wss";
 
 const WorkspaceSchema: Schema = new Schema(
   {
@@ -30,10 +30,24 @@ WorkspaceSchema.set("toJSON", {
 });
 
 // Stage 1: Broadcast to all of the connected users when saving
-WorkspaceSchema.post("save", async function (doc, next) {
+// WorkspaceSchema.post("save", async function (doc, next) {
+//   let WorkspaceModel = mongoose.model<IWorkspace>("Workspace");
+//   const workspaces = await WorkspaceModel.find();
+//   await broadcast({ data: workspaces });
+//   return next();
+// });
+
+// Stage 2: Only send update to registered users
+WorkspaceSchema.post("save", async function (doc: IWorkspace, next) {
   let WorkspaceModel = mongoose.model<IWorkspace>("Workspace");
-  const workspaces = await WorkspaceModel.find();
-  await broadcast({ data: workspaces });
+
+  // Get workspaces for the specific event
+  const workspaces = await WorkspaceModel.find({
+    eventId: doc.eventId,
+  });
+
+  // Update the registered users
+  await updateRegisteredUsers({ data: workspaces }, doc.eventId.toString());
   return next();
 });
 

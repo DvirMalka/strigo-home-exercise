@@ -5,6 +5,7 @@ const router = Router();
 
 // Get all workspaces
 router.get("/", async (req: Request, res: Response) => {
+  console.log(req.session);
   const workspaces = await db.getWorkspaces();
   res.send({ workspaces });
 });

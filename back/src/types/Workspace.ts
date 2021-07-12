@@ -12,8 +12,8 @@ export enum WorkspaceStatus {
 }
 
 export interface IWorkspace {
-  eventId?: EventId;
   id?: WorkspaceId;
+  eventId: EventId;
   owner: string;
   status: WorkspaceStatus;
   createdAt?: Date;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction, response } from "express";
 import helmet from "helmet";
 import cors from "cors";
 import httpStatus from "http-status";
@@ -25,7 +25,6 @@ app.get("/ping", (req: Request, res: Response, next: NextFunction) => {
 });
 
 // Application routes
-// app.use(`/users`, routes.users);
 app.use(`/events`, routes.events);
 app.use(`/workspaces`, routes.workspaces);
 

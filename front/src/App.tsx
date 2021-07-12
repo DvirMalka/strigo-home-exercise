@@ -1,18 +1,16 @@
- 
-import { useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { isAppLoadedState } from './recoil/atoms';
+import { useEffect } from "react";
+import { useRecoilState } from "recoil";
+import { isAppLoadedState } from "./recoil/atoms";
+import { RecoilRoot } from "recoil";
 
-import WorkspacesTable from './components/WorkspacesTable';
+import FullPage from "./components/FullPage";
 
 function App() {
-  const [isAppLoaded, setIsAppLoaded] = useRecoilState(isAppLoadedState);
-
-  useEffect(() => {
-    setIsAppLoaded(true);
-  });
-
-  return <div>{isAppLoaded && <WorkspacesTable />}</div>;
+  return (
+    <RecoilRoot>
+      <FullPage />
+    </RecoilRoot>
+  );
 }
 
 export default App;
