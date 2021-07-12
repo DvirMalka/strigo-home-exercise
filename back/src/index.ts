@@ -1,7 +1,7 @@
-require("dotenv").config()
+require("dotenv").config();
 import * as mongooseService from "./services/mongoose";
 import logger from "./services/logger";
-
+import * as wss from "./services/wss";
 import app from "./app";
 
 let server: any;
@@ -12,6 +12,7 @@ async function init() {
     logger.info("Connected to MongoDB");
     server = app.listen(process.env.SERVER_PORT, () => {
       logger.info(`Listening to port ${process.env.SERVER_PORT}`);
+      wss.init();
     });
   } catch (err: any) {
     logger.error("Cannot connect to MongoDB", err);

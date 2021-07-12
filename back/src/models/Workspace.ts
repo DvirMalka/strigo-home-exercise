@@ -1,24 +1,6 @@
 import mongoose, { Schema } from "mongoose";
-
-import { EventId } from "./Event";
-
-export type WorkspaceId = mongoose.Types.ObjectId;
-
-export enum WorkspaceStatus {
-  OFFLINE = "offline",
-  PREPARING = "preparing",
-  READY = "ready",
-  TERMINATED = "terminated",
-  DELETED = "deleted",
-}
-
-export interface IWorkspace {
-  eventId?: EventId;
-  id?: WorkspaceId;
-  owner: string;
-  status: WorkspaceStatus;
-  createdAt?: Date;
-}
+import { WorkspaceStatus, IWorkspace } from "../types/Workspace";
+import { broadcast } from "../services/wss";
 
 const WorkspaceSchema: Schema = new Schema(
   {
@@ -45,6 +27,14 @@ WorkspaceSchema.set("toJSON", {
     delete ret._id;
     delete ret.__v;
   },
+});
+
+// Stage 1: Broadcast to all of the connected users when saving
+WorkspaceSchema.post("save", async function (doc, next) {
+  let WorkspaceModel = mongoose.model<IWorkspace>("Workspace");
+  const workspaces = await WorkspaceModel.find();
+  await broadcast({ data: workspaces });
+  return next();
 });
 
 export default mongoose.model<IWorkspace>("Workspace", WorkspaceSchema);

@@ -1,10 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-export type EventId = mongoose.Types.ObjectId;
-
-export interface IEvent {
-  id?: EventId;
-  name: string;
-}
+import { IEvent } from "../types/Event";
 
 const EventSchema: Schema = new Schema({
   name: { type: String, required: true, index: false },

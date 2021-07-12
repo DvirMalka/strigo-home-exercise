@@ -1,5 +1,8 @@
-import EventModel, { IEvent, EventId } from "../models/Event";
-import WorkspaceModel, { IWorkspace, WorkspaceId } from "../models/Workspace";
+import { IEvent, EventId } from "../types/Event";
+import EventModel from "../models/Event";
+import { IWorkspace, WorkspaceId } from "../types/Workspace";
+import WorkspaceModel from "../models/Workspace";
+
 import logger from "../services/logger";
 
 // Events
