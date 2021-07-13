@@ -11,15 +11,19 @@ Initial fetch is done via REST API and all of the realtime updates are managed b
 With mongoose hooks I managed to get the changed document (and it's associated EventId), to update all of the clients registered to the connected event - without adding extra code.
 
 ***Step 1***
+
 Broadcast - Update all of the connected clients with all of the workspaces - with every change in any workspace.
 
 ***Step 2***
+
 By clicking the specific event- The user will register to the event via a websocket message (websocket connections are mapped under EventId).
 Upon leaving the event / closing the connection - the user will unregister from the event.
 
 ***Step 3***
+
 We can further reduce the amount of data going through our websocket connection by:  
 • Update specific changed workspaces - and not the whole workspaces for every event.
+
 • Separate between realtime data and large amounts of data that does not require realtime  updates. For instance - we can upload attachment files to cloud storage and realtime-update only the link to those files, providing a way for downloading. 
 
 ## Running instructions
