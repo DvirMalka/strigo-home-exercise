@@ -17,7 +17,7 @@ const init = (): WebSocket.Server => {
   });
 
   wss.on("connection", (ws: any) => {
-    logger.info("New connection");
+    logger.info("New WS connection");
     const id = uuid();
     ws.id = id;
     ws.on("message", (message: string) => {

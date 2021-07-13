@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 import Table from "react-bootstrap/Table";
-import Card from "react-bootstrap/Card";
 import history from "../services/history";
 import { useRecoilState } from "recoil";
 import { eventsState } from "../recoil/atoms";
 import { getEvents } from "../services/api";
+import Navbar from "react-bootstrap/Navbar";
 
 function EventsTable() {
   const [events, setEvents] = useRecoilState(eventsState);
@@ -20,21 +20,20 @@ function EventsTable() {
 
   return (
     <div>
-      <Card style={{ width: "100%" }}>
-        <Card.Body>
-          <Card.Title>Please choose the event you want to register</Card.Title>
-        </Card.Body>
-      </Card>
+      <Navbar bg="light" expand="lg">
+        <Navbar.Brand href="#home">Strigo Events</Navbar.Brand>
+      </Navbar>
       <Table striped bordered hover>
         <thead>
           <tr>
-            <th>Id</th>
-            <th>Name</th>
+            <th>Event Id</th>
+            <th>Event Name</th>
           </tr>
         </thead>
         <tbody>
           {events.map((event) => (
             <tr
+              style={{ cursor: "pointer" }}
               onClick={() => {
                 history.push(`/events/${event.id}`);
               }}
