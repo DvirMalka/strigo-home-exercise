@@ -23,8 +23,8 @@
     "web-vitals": "1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start": "react-scripts start dotenv_config_path=.env",
+    "build": "react-scripts build dotenv_config_path=.env.production.local",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
